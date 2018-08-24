@@ -1,0 +1,8 @@
+googlechrome
+firefox
+office365proplus
+onenote
+slack
+windirstat
+7zip
+lastpass-for-applications

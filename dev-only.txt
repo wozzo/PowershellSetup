@@ -1,0 +1,10 @@
+nodejs
+git
+tortoisegit
+vscode
+notepadplusplus
+visualstudio2017professional
+sql-server-management-studio
+fiddler
+postman
+prefix
