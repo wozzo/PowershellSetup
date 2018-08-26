@@ -70,7 +70,6 @@ function Set-WozzoEnvironment {
     Set-IsHomeEnvironment $homeEnvironment
     Set-IsWorkEnvironment $workEnvironment
 }
-Export-ModuleMember -Function Set-WozzoEnvironment
 
 <#
  .Synopsis
@@ -86,14 +85,17 @@ Export-ModuleMember -Function Set-WozzoEnvironment
 function Install-ChocolateyPackages {
     $packages = Get-PackagesForChocolatey
     Write-Host "Found $($packages.Length) packages to install"
-    foreach ($package in $packages)
-    {
+    $packagesToPin = Get-PackagesToPin
+    foreach ($package in $packages) {
         $package = $package.Packages
         Write-Host "Installing $package"
         choco install $package -y
+
+        if ($packagesToPin.Contains($package)) {
+            Add-PackagePin $package
+        }
     }
 }
-Export-ModuleMember -Function Install-ChocolateyPackages
 
 <#
  .Synopsis
@@ -111,7 +113,13 @@ function Install-FirstRun {
     Set-ExecutionPolicy RemoteSigned
 
     Set-WozzoEnvironment
-    Install-ChocolateyPackages
+    
+    $installPackages = Read-Confirmation "Would you like to install the packages for this environment now?"
+    if ($installPackages) {
+        Install-ChocolateyPackages
+    } else {
+        Write-Host "You can trigger the install by running the 'Install-ChocolateyPackages' command"
+    }
 }
 
 # Check if chocolatey is installed

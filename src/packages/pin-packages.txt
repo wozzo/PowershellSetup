@@ -1,0 +1,6 @@
+googlechrome
+firefox
+office365proplus
+onenote
+slack
+vscode

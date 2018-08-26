@@ -151,7 +151,7 @@ function Add-ModuleToProfile {
                  + $(if ($AllHosts) { 'AllHosts' } else { 'CurrentHost' })
     Write-Verbose "`$profileName = '$profileName'"
 
-    if (!Force) {
+    if (!$Force) {
         if (Test-ModuleInProfiles $module) {
             Write-Warning "Skipping add of $module import to file '$profilePath'."
             Write-Warning "$module appears to already be imported in one of your profile scripts."

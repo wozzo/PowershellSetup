@@ -11,6 +11,8 @@ Write-Host "
        \/             \/      \/      
 "
 
+[Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls -bor [Net.SecurityProtocolType]::Tls11 -bor [Net.SecurityProtocolType]::Tls12
+
 Import-Module $PSScriptRoot\utility.ps1
 Import-Module $PSScriptRoot\packages.ps1
 Import-Module $PSScriptRoot\shortcuts.ps1

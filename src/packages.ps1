@@ -5,6 +5,7 @@ $corePackages = Join-Path $packageListPath "core.txt"
 $homeOnlyPackages = Join-Path $packageListPath "home-only.txt"
 $workOnlyPackages = Join-Path $packageListPath "work-only.txt"
 $devOnlyPackages = Join-Path $packageListPath "dev-only.txt"
+$packagesToPin = Join-Path $packageListPath "pin-packages.txt"
 
 <#
  .Synopsis
@@ -60,27 +61,10 @@ function Get-PackagesForChocolatey {
     return $packages
 }
 
-<#
- .Synopsis
-  Use chocolatey to update the packages for this environment
-
- .Description
-  Use chocolatey to update the packages for this environment
-
- .Example
-   # Update the packages for this environment using chocolatey
-   Update-ChocolateyPackages
-#>
-function Update-ChocolateyPackages {
-    choco upgrade chocolatey
-
-    $packages = Get-PackagesForChocolatey
-    foreach ($package in $packages)
-    {
-        choco upgrade $package -y
-    }
+function Get-PackagesToPin {
+    $packagesToPin = Get-PackageNames $packagesToPin
+    return $packagesToPin
 }
-Export-ModuleMember -Function Update-ChocolateyPackages
 
 <#
  .Synopsis
@@ -101,7 +85,10 @@ Export-ModuleMember -Function Update-ChocolateyPackages
   .Parameter workOnly
   Add the package to the work only list
 
- .Example
+  .Parameter pinPackage
+  Pin the package so that it will be skipped during upgrades. Used for auto updating applications such as google chrome.
+
+  .Example
    # Add the google chrome package to a list of those managed by chocolatey
    Add-Package googlechrome 
 
@@ -118,8 +105,14 @@ function Add-Package {
         [switch]
         $homeOnly,
         [switch]
-        $workOnly
+        $workOnly,
+        [switch]
+        $pinPackage
     )
+
+    if ($pinPackage -eq $true) {
+        Add-PackagePinToFile $packageName
+    }
 
     $packageText = "`n$packageName"
 
@@ -143,4 +136,12 @@ function Add-Package {
 
     Add-Content $corePackages $packageText
 }
-Export-ModuleMember -Function Add-Package
+
+function Add-PackagePinToFile {
+    param (
+        [string]
+        $package
+    )
+    $packageText = "`n$package"
+    Add-Content $packagesToPin $packageText
+}
