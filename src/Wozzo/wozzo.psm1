@@ -18,4 +18,6 @@ Import-Module $PSScriptRoot\setup.ps1
 
 # Useful variables
 $hosts = Join-Path -Path $system -ChildPath "drivers\etc\hosts"
-Export-ModuleMember -Variable hosts
+
+
+Export-ModuleMember -Variable * -Function * -Alias * -Cmdlet *
