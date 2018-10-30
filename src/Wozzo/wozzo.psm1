@@ -1,5 +1,3 @@
-#Requires -RunAsAdministrator
-
 $system =  [Environment]::GetFolderPath("System")
 
 Write-Host "
