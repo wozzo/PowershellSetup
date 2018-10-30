@@ -8,3 +8,9 @@ sql-server-management-studio
 fiddler
 postman
 prefix
+datagrip
+resharper
+ScreenToGif
+docker-for-windows
+docker-kitematic
+winmerge
